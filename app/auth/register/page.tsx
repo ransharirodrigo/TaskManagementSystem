@@ -28,7 +28,6 @@ export default function RegisterPage() {
           return;
         }
       } catch (err) {
-        // If check fails, continue to register page
       } finally {
         setIsCheckingAuth(false);
       }
@@ -42,7 +41,6 @@ export default function RegisterPage() {
     setError("");
     setIsLoading(true);
 
-    // Client-side validation
     if (!name.trim()) {
       setError("Name is required");
       setIsLoading(false);
@@ -67,7 +65,6 @@ export default function RegisterPage() {
       return;
     }
 
-    // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError("Please enter a valid email address");
@@ -75,19 +72,36 @@ export default function RegisterPage() {
       return;
     }
 
-    // Password length validation
     if (password.length < 6) {
       setError("Password must be at least 6 characters long");
       setIsLoading(false);
       return;
     }
 
-    // Note: Registration API endpoint needs to be implemented
-    setError("Registration is not yet implemented");
-    setIsLoading(false);
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Registration failed");
+        setIsLoading(false);
+        return;
+      }
+
+      router.push("/auth/login");
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+      setIsLoading(false);
+    }
   };
 
-  // Show loading state while checking authentication
   if (isCheckingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
