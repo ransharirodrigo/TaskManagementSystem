@@ -2,15 +2,26 @@
 
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Button } from "@/components/ui/Button";
+import { Button } from '@/components/ui/Button';
 
 export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleLogout = async () => {
-    document.cookie = 'auth-token=; Max-Age=0; path=/;';
-    router.push('/auth/login');
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      router.push('/auth/login');
+      router.refresh();
+    } catch (error) {
+      console.error('Logout failed', error);
+      router.push('/auth/login');
+      router.refresh();
+    }
   };
 
   if (pathname?.startsWith('/auth')) {
@@ -37,11 +48,9 @@ export function Navbar() {
 
           <div className="flex items-center space-x-4">
             <Link href="/tasks/new">
-              <Button size="sm">
-                New Task
-              </Button>
+              <Button size="sm">New Task</Button>
             </Link>
-            
+
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               Logout
             </Button>
