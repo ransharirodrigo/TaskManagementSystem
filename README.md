@@ -55,10 +55,10 @@ JWT_SECRET="your-secret-key"
 
   Generate a secure JWT secret:
 
-   # On macOS/Linux
+   On macOS/Linux : 
    openssl rand -base64 32
    
-   # On Windows (PowerShell)
+   On Windows (PowerShell) : 
    [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))
 
 4️⃣ Run Prisma migrations (if needed):
@@ -125,3 +125,74 @@ Open <strong>http://localhost:3000</strong> in your browser to access the applic
 .env                    # Environment variables (DATABASE_URL, JWT_SECRET)
 </pre>
 
+<h2>🧪 Testing</h2>
+
+This project includes a meaningful test suite implemented using <strong>Jest</strong> and <strong>React Testing Library</strong>.  
+The tests focus on validating core application behavior, authentication enforcement, and UI rendering, without introducing unnecessary complexity.
+
+<h3>🔧 Testing Tools</h3>
+<ul>
+  <li><strong>Jest</strong> – JavaScript testing framework</li>
+  <li><strong>React Testing Library</strong> – UI component testing</li>
+  <li><strong>Node Fetch</strong> – Integration testing for API routes</li>
+</ul>
+
+<h3>▶️ How to Run Tests</h3>
+
+1️⃣ Make sure dependencies are installed:
+
+<pre>
+npm install
+</pre>
+
+2️⃣ Start the development server (required for API integration tests):
+
+<pre>
+npm run dev
+</pre>
+
+3️⃣ In a separate terminal, run the test suite:
+
+<pre>
+npm test
+</pre>
+
+Jest will run in watch mode and re-run tests automatically when files change.
+
+<h3>📌 What Is Tested</h3>
+
+<strong>1️⃣ API Integration Tests</strong> (<code>__tests__/api</code>)
+<ul>
+  <li>Unauthorized access to protected task routes</li>
+  <li>Accessing a non-existing task</li>
+  <li>Updating a non-existing task</li>
+  <li>Deleting a non-existing task</li>
+</ul>
+
+These tests ensure:
+<ul>
+  <li>JWT authentication is enforced</li>
+  <li>Route protection works correctly</li>
+  <li>Error handling behaves as expected</li>
+</ul>
+
+<strong>2️⃣ UI Component Tests</strong> (<code>__tests__/components</code>)
+<ul>
+  <li>TaskCard component renders task title and description</li>
+  <li>Correct task status badge is displayed</li>
+</ul>
+
+These tests ensure:
+<ul>
+  <li>Reusable UI components render correctly</li>
+  <li>Task data is displayed accurately</li>
+</ul>
+
+<h3>🎯 Testing Scope & Rationale</h3>
+
+The current test coverage intentionally focuses on:
+<ul>
+  <li>Authentication and authorization logic</li>
+  <li>API error scenarios and route protection</li>
+  <li>Critical UI component rendering</li>
+</ul>
