@@ -1,5 +1,11 @@
 import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/auth-server';
 
 export default async function HomePage() {
-  redirect('/auth/login');
+  const user = await getCurrentUser();
+  if (user) {
+    redirect('/tasks');
+  } else {
+    redirect('/auth/login');
+  }
 }

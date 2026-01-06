@@ -10,3 +10,14 @@ export function isValidEmail(email: string): boolean {
 export function isValidPasswordLength(password: string, minLength = 6): boolean {
   return password.length >= minLength;
 }
+
+export function isValidTaskTitle(title: string): boolean {
+  return isRequired(title) && title.length <= 100;
+}
+
+export function isValidTaskDescription(
+  description?: string
+): boolean {
+  if (!description) return true;
+  return description.length <= 1000;
+}
