@@ -139,7 +139,6 @@ export default function TaskDetailPage() {
           </div>
         </div>
 
-        {/* Task Card */}
         <Card className="p-8">
           <div className="flex items-start justify-between mb-6">
             <h1 className="text-3xl font-bold flex-1">{task.title}</h1>
