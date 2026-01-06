@@ -1,6 +1,7 @@
 <h1>🎯 Task Management System</h1>
 
-A modern task management application built with Next.js, TypeScript, and Prisma. Keep track of your tasks, mark them as completed, and manage them with a clean, responsive UI.
+A modern task management application built with Next.js (App Router), TypeScript, Prisma, and Tailwind CSS.  
+Manage tasks efficiently: create, view, edit, delete, and mark them as completed with a clean, responsive interface.
 
 <h2>📸 Features</h2>
 
@@ -9,32 +10,33 @@ A modern task management application built with Next.js, TypeScript, and Prisma.
   <li>Create, view, edit, and delete tasks</li>
   <li>Mark tasks as pending or completed</li>
   <li>View detailed task information, including creation and last updated timestamps</li>
+  <li>Task list page with pagination and navigation</li>
 </ul>
 
 💻 <strong>User Authentication</strong>
 <ul>
   <li>Tasks are user-specific</li>
-  <li>Unauthorized users cannot access tasks</li>
-  <li>All actions are secured via server-side authentication</li>
+  <li>All actions are secured via JWT authentication</li>
+  <li>Unauthorized users cannot access task details or perform actions</li>
 </ul>
 
 🎨 <strong>Responsive UI</strong>
 <ul>
-  <li>Designed using Tailwind CSS for a modern look and feel</li>
-  <li>Reusable components like Button, Badge, Card, Input, and Textarea</li>
-  <li>Clean and intuitive navigation between task list, details, and edit pages</li>
+  <li>Designed using Tailwind CSS for modern styling</li>
+  <li>Reusable UI components: Button, Badge, Card, Input, Textarea</li>
+  <li>Clean and intuitive navigation between task list, task details, edit, and new task pages</li>
 </ul>
 
 <h2>📖 Getting Started</h2>
 
-1️⃣ Clone the repository
+1️⃣ Clone the repository:
 
 <pre>
 git clone https://github.com/ransharirodrigo/TaskManagementSystem.git
 cd TaskManagementSystem
 </pre>
 
-2️⃣ Install dependencies
+2️⃣ Install dependencies:
 
 <pre>
 npm install
@@ -42,22 +44,30 @@ npm install
 
 3️⃣ Set up environment variables  
 
-Create a <code>.env.local</code> file in the project root:
+Create a <code>.env</code> file in the project root 
 
 <pre>
-DATABASE_URL="your-database-url"
-NEXTAUTH_SECRET="your-secret-key"
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="your-secret-key"
 </pre>
 
-⚠️ Important: Replace <code>your-database-url</code> with your Prisma database connection string (e.g., PostgreSQL, MySQL, or SQLite).  
+⚠️ Make sure to set a strong <code>JWT_SECRET</code> for authentication.  
 
-4️⃣ Run Prisma migrations  
+  Generate a secure JWT secret:
+
+   # On macOS/Linux
+   openssl rand -base64 32
+   
+   # On Windows (PowerShell)
+   [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))
+
+4️⃣ Run Prisma migrations (if needed):
 
 <pre>
 npx prisma migrate dev
 </pre>
 
-5️⃣ Start the development server
+5️⃣ Start the development server:
 
 <pre>
 npm run dev
@@ -69,17 +79,41 @@ Open <strong>http://localhost:3000</strong> in your browser to access the applic
 
 <pre>
 /app
+  /api
+    /auth
+      /login
+        route.ts      # API route for logging in
+      /logout
+        route.ts      # API route for logging out
+      /me
+        route.ts      # API route for fetching current user
+      /register
+        route.ts      # API route for user registration
+    /tasks
+      /[id]
+        route.ts      # API route for task CRUD by ID
+  /auth
+    /login
+      page.tsx        # Login page
+    /register
+      page.tsx        # Registration page
   /tasks
     /[id]
-      page.tsx          # Task detail page
-      edit/page.tsx     # Task edit page
-  /api
-    /tasks
-      route.ts          # API routes for task CRUD operations
-/public                  # Static assets like images
+      edit
+        page.tsx      # Edit task page
+      page.tsx        # Task details page
+    /new
+      page.tsx        # Create new task page
+    page.tsx          # Task list page
+  favicon.ico
+  globals.css
+  layout.tsx
+  page.tsx            # Home page
+/public                  # Static assets
 /lib
-  prisma.ts               # Prisma client instance
-  auth-server.ts          # Server-side auth functions
+  prisma.ts             # Prisma client instance
+  auth-server.ts        # Server-side authentication functions (JWT validation)
+  utils.ts              # Helper functions 
 /components
   /ui
     Button.tsx
@@ -87,25 +121,7 @@ Open <strong>http://localhost:3000</strong> in your browser to access the applic
     Card.tsx
     Input.tsx
     Textarea.tsx
-/types.ts                # TypeScript types for Task and TaskStatus
-/utils.ts                # Utility functions (e.g., formatDateTime)
-.env.local               # Environment variables (DATABASE_URL, NEXTAUTH_SECRET)
+/types.ts               # TypeScript types for Task and TaskStatus
+.env                    # Environment variables (DATABASE_URL, JWT_SECRET)
 </pre>
 
-<h2>💡 Tips & Recommendations</h2>
-
-<ul>
-  <li>Ensure <code>DATABASE_URL</code> points to a valid database before running migrations</li>
-  <li>Use TypeScript for type safety and better developer experience</li>
-  <li>Customize Tailwind classes in <code>globals.css</code> to fit your design preferences</li>
-  <li>All API routes are protected; make sure you handle authentication properly when extending features</li>
-  <li>For production deployment (Vercel, Netlify, etc.), add <code>DATABASE_URL</code> and <code>NEXTAUTH_SECRET</code> as environment variables</li>
-</ul>
-
-<h2>📄 Next Steps</h2>
-
-<ul>
-  <li>Implement user authentication and session management if not done yet</li>
-  <li>Add search, filter, and pagination for tasks</li>
-  <li>Add testing for API routes and UI components</li>
-</ul>
