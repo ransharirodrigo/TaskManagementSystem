@@ -43,15 +43,18 @@ export default function NewTaskPage() {
         body: JSON.stringify({ title, description }),
       });
 
+      console.log(response);
+
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to create task');
       }
 
       router.push('/tasks');
       router.refresh();
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -100,7 +103,11 @@ export default function NewTaskPage() {
                 </Button>
               </Link>
 
-              <Button type="submit" isLoading={loading}>
+              <Button
+                type="submit"
+                isLoading={loading}
+                disabled={loading}
+              >
                 Create Task
               </Button>
             </div>
