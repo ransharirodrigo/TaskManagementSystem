@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { ArrowLeft, Save } from 'lucide-react';
 
 export default function EditTaskPage() {
