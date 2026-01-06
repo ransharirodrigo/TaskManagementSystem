@@ -1,19 +1,18 @@
-/**
- * Reusable Card Component
- * Container with white background and shadow
- */
-
 import React from 'react';
-import { cn } from '@/lib/utils';
 
 interface CardProps {
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }
 
-export function Card({ children, className }: CardProps) {
+export function Card({ children, className = '', onClick }: CardProps) {
   return (
-    <div className={cn('bg-white rounded-lg shadow-md', className)}>
+    <div 
+      className={`bg-white rounded-lg shadow ${className}`}
+      onClick={onClick}
+      style={onClick ? { cursor: 'pointer' } : undefined}
+    >
       {children}
     </div>
   );
