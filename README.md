@@ -44,7 +44,7 @@ npm install
 
 3️⃣ Set up environment variables  
 
-Create a <code>.env</code> file in the project root 
+Create a <code>.env</code> file in the project root and copy the content in  <code>.env.example</code>
 
 <pre>
 DATABASE_URL="file:./dev.db"
