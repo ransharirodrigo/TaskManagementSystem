@@ -1,3 +1,11 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth-server';
+import {
+  isValidTaskDescription,
+  isValidTaskTitle,
+} from '@/lib/validations';
+
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser();
@@ -10,13 +18,15 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { title, description } = body;
-    if (!title || typeof title !== 'string' || title.length > 100) {
+
+    if (!isValidTaskTitle(title)) {
       return NextResponse.json(
         { success: false, error: 'Invalid title' },
         { status: 400 }
       );
     }
-    if (description && (typeof description !== 'string' || description.length > 1000)) {
+
+    if (!isValidTaskDescription(description)) {
       return NextResponse.json(
         { success: false, error: 'Invalid description' },
         { status: 400 }
@@ -40,9 +50,6 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { getCurrentUser } from '@/lib/auth-server';
 
 export async function GET(request: NextRequest) {
   try {

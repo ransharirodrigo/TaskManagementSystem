@@ -16,7 +16,6 @@ export default function RegisterPage() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const router = useRouter();
 
-  // Check if user is already authenticated
   useEffect(() => {
     const checkAuth = async () => {
       try {

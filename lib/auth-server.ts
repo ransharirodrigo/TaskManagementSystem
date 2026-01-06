@@ -1,9 +1,7 @@
-import { cookies } from 'next/headers';
-import { verifyToken, TokenPayload } from './auth';
+import { TokenPayload, getAuthToken, verifyToken } from './auth';
 
 export async function getCurrentUser(): Promise<TokenPayload | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('auth-token')?.value;
+  const token = await getAuthToken();
 
   if (!token) {
     return null;

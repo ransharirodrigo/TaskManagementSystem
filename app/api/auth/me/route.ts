@@ -1,25 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth-server';
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
-    const token = request.cookies.get('auth-token')?.value;
+    const user = await getCurrentUser();
 
-    if (!token) {
+    if (!user) {
       return NextResponse.json({ authenticated: false }, { status: 200 });
     }
 
-    const payload = verifyToken(token);
-
-    if (!payload) {
-      return NextResponse.json({ authenticated: false }, { status: 200 });
-    }
-
-    return NextResponse.json({
-      authenticated: true,
-      user: payload,
-    });
-  } catch (error) {
+    return NextResponse.json(
+      {
+        authenticated: true,
+        user,
+      },
+      { status: 200 }
+    );
+  } catch {
     return NextResponse.json({ authenticated: false }, { status: 200 });
   }
 }

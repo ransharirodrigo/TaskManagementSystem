@@ -2,26 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Task } from '@/types';
+import { Task, Pagination as PaginationInfo } from '@/types';
 import { TaskList } from '@/components/TaskList';
 import { Pagination } from '@/components/Pagination';
-import { Button } from '@/components/ui/Button';
-import { Plus, ListTodo } from 'lucide-react';
-import Link from 'next/link';
 
 export default function TasksPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<PaginationInfo>({
     page: 1,
     limit: 10,
     total: 0,
     totalPages: 0,
   });
 
-  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const currentPage = Number(searchParams.get('page') || '1');
 
   const fetchTasks = async (page: number) => {
     setLoading(true);
@@ -32,10 +29,8 @@ export default function TasksPage() {
       if (data.success) {
         setTasks(data.data);
         setPagination(data.pagination);
-      } else {
-        if (response.status === 401) {
-          router.push('/auth/login');
-        }
+      } else if (response.status === 401) {
+        router.push('/auth/login');
       }
     } catch (error) {
       console.error('Failed to fetch tasks:', error);
@@ -73,12 +68,13 @@ export default function TasksPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-       
         {!loading && tasks.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-sm text-gray-600">Total Tasks</p>
-              <p className="text-2xl font-bold text-gray-900">{pagination.total}</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {pagination.total}
+              </p>
             </div>
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-sm text-gray-600">Pending</p>

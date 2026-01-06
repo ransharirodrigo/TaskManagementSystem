@@ -2,8 +2,13 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const AUTH_COOKIE_NAME = 'auth_token';
+/**
+ * Central auth configuration so cookie & token usage are consistent
+ * across all API routes and server utilities.
+ */
+export const AUTH_COOKIE_NAME = 'auth-token';
+const JWT_SECRET =
+  process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 export interface TokenPayload {
   userId: string;
@@ -41,9 +46,9 @@ export async function comparePassword(
 /* ================= COOKIES ================= */
 
 export async function setAuthCookie(token: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
-  (await cookieStore).set(AUTH_COOKIE_NAME, token, {
+  cookieStore.set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -53,12 +58,11 @@ export async function setAuthCookie(token: string) {
 }
 
 export async function removeAuthCookie() {
-  const cookieStore = cookies();
-
-  (await cookieStore).delete(AUTH_COOKIE_NAME);
+  const cookieStore = await cookies();
+  cookieStore.delete(AUTH_COOKIE_NAME);
 }
 
 export async function getAuthToken(): Promise<string | null> {
-  const cookieStore = cookies();
-  return (await cookieStore).get(AUTH_COOKIE_NAME)?.value || null;
+  const cookieStore = await cookies();
+  return cookieStore.get(AUTH_COOKIE_NAME)?.value || null;
 }
