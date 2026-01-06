@@ -149,8 +149,7 @@ export default function TaskDetailPage() {
           </div>
 
           <div className="mb-6">
-            <h2 className="text-sm font-semibold text-gray-700 uppercase mb-2">Description</h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{task.description || 'No description provided.'}</p>
+            <p className="text-black whitespace-pre-wrap">{task.description || 'No description provided.'}</p>
           </div>
 
           <div className="border-t border-gray-200 pt-6 space-y-3">
