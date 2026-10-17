@@ -41,3 +41,6 @@ next-env.d.ts
 
 /app/generated/prisma
 config.bat
+.vscode
+.env
+api.js
